@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); /* Import Roboto font */
+
+.navbar {
+    background: transparent; /* Transparent background */
+    color: #000; /* Set font color to black */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-family: 'Roboto', sans-serif; /* Apply Roboto font */
+    border-radius: 20px; /* Rounded edges for the navbar */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    color: #000; /* Set font color to black */
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.navbar-brand img.logo {
+    height: 80px; /* Adjust this size as needed */
+    margin-right: 10px;
+}
+
+.navbar-brand:hover {
+    color: #333; /* Slightly darker color on hover */
+}
+
+.navbar-nav {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-nav .nav-item {
+    margin-left: 1rem;
+}
+
+.navbar-nav .nav-link {
+    color: #000; /* Set font color to black */
+    font-size: 1.2rem;
+    text-decoration: none;
+    position: relative;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s, border 0.3s;
+    font-weight: bold; /* Make the navbar menu bold */
+    border-radius: 20px; /* Rounded edges for the link background */
+    border: 2px solid transparent; /* Initial border color transparent */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #000; /* Keep font color black on hover */
+    border: 2px solid #007bff; /* Blue border on hover */
+}
+
+/* Dropdown specific styles */
+.navbar-nav .dropdown-menu {
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .dropdown-menu .dropdown-item {
+    color: #000;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    font-family: 'Roboto', sans-serif; /* Apply Roboto font */
+}
+
+.navbar-nav .dropdown-menu .dropdown-item:hover {
+    background-color: #f1f1f1;
+    color: #000;
+}
+
+.navbar .logo {
+    height: 90px; /* Adjust the height as needed */
+    width: auto;
+    padding: 1px 5px; /* Adjust padding if necessary */
+}

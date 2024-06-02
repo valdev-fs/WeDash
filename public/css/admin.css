@@ -1,0 +1,105 @@
+@import url('navbar.css');
+
+/* Other admin-specific styles */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table td, .table th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+.card-body p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    margin-top: 5px;
+}
+
+table {
+    margin-top: 20px;
+}
+
+/* Pagination styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination li {
+    display: inline;
+}
+
+.pagination li a, .pagination li span {
+    padding: 6px 12px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.pagination li a:hover, .pagination li a:focus {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pagination li.disabled span {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagination li.active span {
+    color: white;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.form-inline .form-group {
+    margin-right: 10px;
+}
+
+.form-inline .btn {
+    vertical-align: middle;
+}
+
+/* New class for page titles */
+h2.page-title {
+    margin-bottom: 2.5rem; /* Add more bottom margin */
+    font-weight: bold;
+    text-align: center;
+}

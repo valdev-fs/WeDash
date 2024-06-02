@@ -1,0 +1,73 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f9f9f9;
+    background-image: url('/images/background.png'); /* Add background image */
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the background image */
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.logo {
+    max-width: 150px;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.input-group-text {
+    background: none;
+    border-right: none;
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+
+.btn-success {
+    background: linear-gradient(90deg, rgba(0,123,255,1) 0%, rgba(72,149,239,1) 50%, rgba(0,212,255,1) 100%);
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(90deg, rgba(0,123,255,0.8) 0%, rgba(72,149,239,0.8) 50%, rgba(0,212,255,0.8) 100%);
+}
+
+.link {
+    display: block;
+    margin-top: 0.5rem;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
