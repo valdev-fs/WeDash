@@ -20,6 +20,9 @@ Route::get('/', function () {
     }
 });
 
+Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('users', [UserController::class, 'store'])->name('users.store');
+
 Route::middleware('redirect_if_authenticated')->group(function () {
     Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AuthController::class, 'login']);
@@ -36,8 +39,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('admin/reports', AdminController::class);
         Route::resource('reports', AdminController::class);
 
-        Route::get('users/create', [UserController::class, 'create'])->name('users.create');
-        Route::post('users', [UserController::class, 'store'])->name('users.store');
+        
 
         Route::get('assign-access', [AccessUserController::class, 'create'])->name('access.create');
         Route::post('assign-access', [AccessUserController::class, 'store'])->name('access.store');

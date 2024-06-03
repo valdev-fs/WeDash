@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
-use Illuminate\Http\Request;
 use App\Services\PowerBIService;
 use GuzzleHttp\Exception\RequestException;
 use App\Models\AccessUser;
