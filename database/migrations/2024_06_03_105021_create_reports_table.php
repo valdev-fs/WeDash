@@ -15,7 +15,7 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name_report', 25);
+            $table->string('name_report', 50);
             $table->string('id_report', 36);
             $table->string('id_dataset', 36);
             $table->string('id_group', 36);
