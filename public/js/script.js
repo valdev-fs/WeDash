@@ -43,12 +43,12 @@ function hideLoadingBar() {
 }
 
 function showError(message) {
-    $('#embedStatus').text(message).addClass('text-danger').fadeIn();
+    $("#embedStatus").text(message).addClass("text-danger").fadeIn();
 }
 
 function loadReport(reportId) {
     showLoadingBar(0);
-    $('#embedStatus').fadeOut();
+    $("#embedStatus").fadeOut();
 
     $.ajax({
         url: `/reports/${reportId}`,
@@ -74,20 +74,32 @@ function loadReport(reportId) {
                 id: reportId,
                 permissions: models.Permissions.All,
                 settings: {
+                    filterPaneEnabled: false, // Disable the filter pane
+                    navContentPaneEnabled: false, // Disable the navigation content pane
                     panes: {
                         filters: {
-                            visible: true,
+                            visible: false, // Hide the filters pane
                         },
                         pageNavigation: {
-                            visible: true,
+                            visible: false, // Hide the page navigation pane
+                        },
+                        visualizations: {
+                            visible: false, // Hide the visualizations pane (for dashboards)
+                        },
+                        bookmarks: {
+                            visible: false, // Hide the bookmarks pane
                         },
                     },
                     bars: {
                         statusBar: {
-                            visible: true,
+                            visible: false, // Hide the status bar
+                        },
+                        actionBar: {
+                            visible: false, // Hide the action bar
                         },
                     },
-                    layoutType: models.LayoutType.Custom,
+                    bookmarksPaneEnabled: false, // Disable the bookmarks pane
+                    // Set background to transparent
                 },
             };
 
