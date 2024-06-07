@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccessUsersTable extends Migration
+class CreateReportViewLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateAccessUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('access_users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->char('NPK', 5);
+        Schema::create('report_view_logs', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('report_id');
-            $table->timestamp('updated_at')->useCurrent();
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('viewed_at');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +29,6 @@ class CreateAccessUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('access_users');
+        Schema::dropIfExists('report_view_logs');
     }
 }

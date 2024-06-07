@@ -17,6 +17,7 @@
                         <a class="dropdown-item" href="{{ route('users.create') }}">Create User</a>
                         <a class="dropdown-item" href="{{ route('access.create') }}">Assign Access</a>
                         <a class="dropdown-item" href="{{ route('user-management.index') }}">User Management</a>
+                        <a class="dropdown-item" href="/report-monitoring">Report Monitor</a>
                     </div>
                 </li>
             @endif

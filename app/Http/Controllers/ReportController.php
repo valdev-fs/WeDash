@@ -6,7 +6,9 @@ use App\Models\Report;
 use App\Services\PowerBIService;
 use GuzzleHttp\Exception\RequestException;
 use App\Models\AccessUser;
+use App\Models\ReportViewLog; // Add model for logging views
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -28,6 +30,13 @@ class ReportController extends Controller
             $embedToken = $this->generateEmbedToken($report->id_report, $report->id_dataset);
             // Log the generated embed token for debugging
             Log::info('Generated Embed Token: ', ['embedToken' => $embedToken]);
+
+            // Log the view
+            ReportViewLog::create([
+                'user_id' => auth()->id(),
+                'report_id' => $report->id,
+                'viewed_at' => Carbon::now()
+            ]);
         } catch (RequestException $e) {
             // Capture the error message
             $errorMessage = $e->getMessage();

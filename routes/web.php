@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccessUserController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\ReportMonitoringController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/check-env', [EnvCheckController::class, 'check']);
@@ -50,5 +51,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('user-management/department', [UserManagementController::class, 'storeDepartment'])->name('user-management.storeDepartment');
         Route::patch('user-management/department/{department}', [UserManagementController::class, 'updateDepartment'])->name('user-management.updateDepartment');
         Route::delete('user-management/department/{department}', [UserManagementController::class, 'deleteDepartment'])->name('user-management.deleteDepartment');
+
+        Route::get('/report-monitoring', [ReportMonitoringController::class, 'showReportMonitoringPage']);
+        Route::get('/report-monitoring-data', [ReportMonitoringController::class, 'getReportMonitoringData']);
+        Route::get('/user-detail/{userId}', [ReportMonitoringController::class, 'showUserDetailPage']);
+        Route::get('/user-detail-data/{userId}', [ReportMonitoringController::class, 'getUserDetailData']);
     });
 });
