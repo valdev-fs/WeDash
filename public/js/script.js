@@ -46,9 +46,90 @@ function showError(message) {
     $("#embedStatus").text(message).addClass("text-danger").fadeIn();
 }
 
+async function fetchFilterData(reportId) {
+    try {
+        const response = await fetch(
+            `/api/get-branch-filter-data?id=${reportId}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                },
+            }
+        );
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            const text = await response.text();
+            console.error("Unexpected response:", text);
+            throw new Error(`Expected JSON, got: ${text}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error in fetchFilterData:", error);
+        throw error;
+    }
+}
+
+async function fetchUserDepartmentData() {
+    try {
+        const response = await fetch("/api/get-user-department-data", {
+            headers: {
+                Accept: "application/json",
+            },
+        });
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            const text = await response.text();
+            console.error("Unexpected response:", text);
+            throw new Error(`Expected JSON, got: ${text}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error in fetchUserDepartmentData:", error);
+        throw error;
+    }
+}
+
+function embedReport(config) {
+    var reportContainer = document.getElementById("reportContainer");
+    var report = powerbi.embed(reportContainer, config);
+
+    var loadingInterval = setInterval(function () {
+        var width = parseInt($("#loadingBar").css("width"));
+        var containerWidth = reportContainer.clientWidth;
+        if (width < containerWidth) {
+            var percentage = (width / containerWidth) * 100 + 1;
+            showLoadingBar(Math.min(percentage, 100));
+        } else {
+            clearInterval(loadingInterval);
+        }
+    }, 100);
+
+    report.on("loaded", function () {
+        showLoadingBar(50);
+    });
+
+    report.on("rendered", function () {
+        showLoadingBar(100);
+        setTimeout(hideLoadingBar, 1000);
+    });
+
+    report.on("error", function (event) {
+        console.error("Error embedding report:", event.detail);
+        showLoadingBar(0);
+        showError("Error embedding report: " + event.detail.message);
+    });
+
+    $("#fullScreenBtn").on("click", function () {
+        report.fullscreen();
+    });
+}
+
 function loadReport(reportId) {
     showLoadingBar(0);
     $("#embedStatus").fadeOut();
+    var id = reportId;
 
     $.ajax({
         url: `/reports/${reportId}`,
@@ -65,76 +146,121 @@ function loadReport(reportId) {
                 return;
             }
 
-            var models = window["powerbi-client"].models;
-            var config = {
-                type: "report",
-                tokenType: models.TokenType.Embed,
-                accessToken: embedToken,
-                embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${reportId}&groupId=${groupId}`,
-                id: reportId,
-                permissions: models.Permissions.All,
-                settings: {
-                    filterPaneEnabled: false, // Disable the filter pane
-                    navContentPaneEnabled: false, // Disable the navigation content pane
-                    panes: {
-                        filters: {
-                            visible: false, // Hide the filters pane
-                        },
-                        pageNavigation: {
-                            visible: false, // Hide the page navigation pane
-                        },
-                        visualizations: {
-                            visible: false, // Hide the visualizations pane (for dashboards)
-                        },
-                        bookmarks: {
-                            visible: false, // Hide the bookmarks pane
-                        },
-                    },
-                    bars: {
-                        statusBar: {
-                            visible: false, // Hide the status bar
-                        },
-                        actionBar: {
-                            visible: false, // Hide the action bar
-                        },
-                    },
-                    bookmarksPaneEnabled: false, // Disable the bookmarks pane
-                    // Set background to transparent
-                },
-            };
+            fetchUserDepartmentData()
+                .then((userDepartmentData) => {
+                    var config;
+                    var models = window["powerbi-client"].models; // Define models here
+                    if (userDepartmentData.group !== "HO") {
+                        fetchFilterData(id)
+                            .then((branchFilterData) => {
+                                var branchFilter = {
+                                    $schema:
+                                        "http://powerbi.com/product/schema#basic",
+                                    target: {
+                                        table: branchFilterData.branchTables, // Fetch value from BranchFilter table
+                                        column: "BranchCode", // Adjust as necessary
+                                    },
+                                    operator: "In",
+                                    values: [
+                                        ~~userDepartmentData.codeDepartment,
+                                    ], // Use code_department value
+                                };
+                                config = {
+                                    type: "report",
+                                    tokenType: models.TokenType.Embed,
+                                    accessToken: embedToken,
+                                    embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${reportId}&groupId=${groupId}`,
+                                    id: reportId,
+                                    permissions: models.Permissions.All,
+                                    settings: {
+                                        filterPaneEnabled: false, // Disable the filter pane
+                                        navContentPaneEnabled: false, // Disable the navigation content pane
+                                        panes: {
+                                            filters: {
+                                                visible: false, // Hide the filters pane
+                                            },
+                                            pageNavigation: {
+                                                visible: false, // Hide the page navigation pane
+                                            },
+                                            visualizations: {
+                                                visible: false, // Hide the visualizations pane (for dashboards)
+                                            },
+                                            bookmarks: {
+                                                visible: false, // Hide the bookmarks pane
+                                            },
+                                        },
+                                        bars: {
+                                            statusBar: {
+                                                visible: false, // Hide the status bar
+                                            },
+                                            actionBar: {
+                                                visible: false, // Hide the action bar
+                                            },
+                                        },
+                                        bookmarksPaneEnabled: false, // Disable the bookmarks pane
+                                        // Set background to transparent
+                                    },
+                                    filters: [branchFilter],
+                                };
 
-            var reportContainer = document.getElementById("reportContainer");
-            var report = powerbi.embed(reportContainer, config);
+                                embedReport(config);
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    "Error fetching filter data",
+                                    error
+                                );
+                                showLoadingBar(0);
+                                showError(
+                                    "Error fetching filter data: " + error
+                                );
+                            });
+                    } else {
+                        config = {
+                            type: "report",
+                            tokenType: models.TokenType.Embed,
+                            accessToken: embedToken,
+                            embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${reportId}&groupId=${groupId}`,
+                            id: reportId,
+                            permissions: models.Permissions.All,
+                            settings: {
+                                filterPaneEnabled: false, // Disable the filter pane
+                                navContentPaneEnabled: false, // Disable the navigation content pane
+                                panes: {
+                                    filters: {
+                                        visible: false, // Hide the filters pane
+                                    },
+                                    pageNavigation: {
+                                        visible: false, // Hide the page navigation pane
+                                    },
+                                    visualizations: {
+                                        visible: false, // Hide the visualizations pane (for dashboards)
+                                    },
+                                    bookmarks: {
+                                        visible: false, // Hide the bookmarks pane
+                                    },
+                                },
+                                bars: {
+                                    statusBar: {
+                                        visible: false, // Hide the status bar
+                                    },
+                                    actionBar: {
+                                        visible: false, // Hide the action bar
+                                    },
+                                },
+                                bookmarksPaneEnabled: false, // Disable the bookmarks pane
+                                // Set background to transparent
+                            },
+                        };
 
-            var loadingInterval = setInterval(function () {
-                var width = parseInt($("#loadingBar").css("width"));
-                var containerWidth = reportContainer.clientWidth;
-                if (width < containerWidth) {
-                    var percentage = (width / containerWidth) * 100 + 1;
-                    showLoadingBar(Math.min(percentage, 100));
-                } else {
-                    clearInterval(loadingInterval);
-                }
-            }, 100);
-
-            report.on("loaded", function () {
-                showLoadingBar(50);
-            });
-
-            report.on("rendered", function () {
-                showLoadingBar(100);
-                setTimeout(hideLoadingBar, 1000);
-            });
-
-            report.on("error", function (event) {
-                console.error("Error embedding report:", event.detail);
-                showLoadingBar(0);
-                showError("Error embedding report: " + event.detail.message);
-            });
-
-            $("#fullScreenBtn").on("click", function () {
-                report.fullscreen();
-            });
+                        embedReport(config);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching user department data", error);
+                    showLoadingBar(0);
+                    showError("Error fetching user department data: " + error);
+                });
         },
         error: function (err) {
             console.error("Error fetching embed token", err);

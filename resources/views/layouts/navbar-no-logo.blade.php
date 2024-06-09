@@ -18,6 +18,7 @@
                         <a class="dropdown-item" href="{{ route('access.create') }}">Assign Access</a>
                         <a class="dropdown-item" href="{{ route('user-management.index') }}">User Management</a>
                         <a class="dropdown-item" href="/report-monitoring">Report Monitor</a>
+                        <a class="dropdown-item" href="{{ route('branch-filters.index') }}">Branch Filter Management</a>
                     </div>
                 </li>
             @endif

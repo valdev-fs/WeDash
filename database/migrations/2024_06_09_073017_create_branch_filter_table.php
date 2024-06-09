@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReportViewLogsTable extends Migration
+class CreateBranchFilterTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateReportViewLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('report_view_logs', function (Blueprint $table) {
+        Schema::create('branch_filters', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->string('branch_table');
             $table->unsignedBigInteger('report_id');
-            $table->timestamp('viewed_at');
             $table->timestamps();
         });
     }
@@ -29,6 +28,7 @@ class CreateReportViewLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('report_view_logs');
+        Schema::dropIfExists('branch_filters');
     }
 }
+

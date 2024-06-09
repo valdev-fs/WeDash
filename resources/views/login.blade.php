@@ -6,12 +6,25 @@
     <title>Login</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <style>
+        .alert-custom {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-card">
             <img src="{{ asset('images/wedash-logo.png') }}" alt="WeDash Logo" class="logo">
             <h2 class="text-center">Good to see you again</h2>
+            @if($errors->any())
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ $errors->first() }}
+                </div>
+            @endif
             <form id="loginForm" method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="form-group">
@@ -20,7 +33,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" class="form-control" id="npk" name="npk" maxlength="5" placeholder="e.g. 12345" required>
+                        <input type="text" class="form-control" id="npk" name="npk" maxlength="5" placeholder="e.g. 12345" value="{{ old('npk') }}" required>
                     </div>
                 </div>
                 <div class="form-group">

@@ -65,4 +65,71 @@ class UserManagementController extends Controller
 
         return redirect()->route('user-management.index')->with(['error' => $errors, 'action' => 'change-password']);
     }
+
+    public function storeDepartment(Request $request)
+    {
+        $errors = [];
+
+        try {
+            $request->validate([
+                'code_department' => 'required|unique:departments,code_department',
+                'description' => 'nullable|string',
+                'group' => 'nullable|string',
+            ]);
+
+            Department::create($request->all());
+
+            return redirect()->route('user-management.index')->with(['success' => 'Department added successfully.', 'action' => 'store-department']);
+        } catch (ValidationException $e) {
+            $errors = array_merge($errors, $e->validator->errors()->all());
+        } catch (\Exception $e) {
+            $errors[] = 'An error occurred while adding the department.';
+        }
+
+        return redirect()->route('user-management.index')->with(['error' => $errors, 'action' => 'store-department']);
+    }
+
+    public function updateDepartment(Request $request, $id)
+    {
+        $errors = [];
+
+        try {
+            $request->validate([
+                'code_department' => 'required|unique:departments,code_department,' . $id,
+                'description' => 'nullable|string',
+                'group' => 'nullable|string',
+            ]);
+
+            $department = Department::findOrFail($id);
+            $department->update($request->all());
+
+            return redirect()->route('user-management.index')->with(['success' => 'Department updated successfully.', 'action' => 'update-department']);
+        } catch (ValidationException $e) {
+            $errors = array_merge($errors, $e->validator->errors()->all());
+        } catch (ModelNotFoundException $e) {
+            $errors[] = 'Department not found.';
+        } catch (\Exception $e) {
+            $errors[] = 'An error occurred while updating the department.';
+        }
+
+        return redirect()->route('user-management.index')->with(['error' => $errors, 'action' => 'update-department']);
+    }
+
+    public function deleteDepartment($id)
+    {
+        $errors = [];
+
+        try {
+            $department = Department::findOrFail($id);
+            $department->delete();
+
+            return redirect()->route('user-management.index')->with(['success' => 'Department deleted successfully.', 'action' => 'delete-department']);
+        } catch (ModelNotFoundException $e) {
+            $errors[] = 'Department not found.';
+        } catch (\Exception $e) {
+            $errors[] = 'An error occurred while deleting the department.';
+        }
+
+        return redirect()->route('user-management.index')->with(['error' => $errors, 'action' => 'delete-department']);
+    }
 }

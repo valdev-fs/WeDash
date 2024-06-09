@@ -10,6 +10,10 @@ use App\Http\Controllers\AccessUserController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ReportMonitoringController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\BranchFilterController;
+
+
 
 Route::get('/check-env', [EnvCheckController::class, 'check']);
 
@@ -26,10 +30,14 @@ Route::middleware('redirect_if_authenticated')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 });
 
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/api/get-user-department-data', [ApiController::class, 'getUserDepartmentData']);
+    Route::get('/api/get-branch-filter-data', [ApiController::class, 'getBranchFilterData']);
+
     Route::get('/', [ReportController::class, 'index'])->name('home');
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
 
@@ -56,5 +64,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/report-monitoring-data', [ReportMonitoringController::class, 'getReportMonitoringData']);
         Route::get('/user-detail/{userId}', [ReportMonitoringController::class, 'showUserDetailPage']);
         Route::get('/user-detail-data/{userId}', [ReportMonitoringController::class, 'getUserDetailData']);
+
+        Route::get('/branch-filters', [BranchFilterController::class, 'index'])->name('branch-filters.index');
+        Route::post('/branch-filters', [BranchFilterController::class, 'store'])->name('branch-filters.store');
+        Route::get('/get-assigned-reports', [BranchFilterController::class, 'getAssignedReports'])->name('get.assigned.reports');
+        Route::post('/branch-filters/delete', [BranchFilterController::class, 'delete'])->name('branch-filters.delete');
     });
 });

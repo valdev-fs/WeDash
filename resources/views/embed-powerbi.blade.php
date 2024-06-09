@@ -78,14 +78,7 @@
             $('.dropdown-toggle').dropdown();
         });
 
-        if (window.console && console.error) {
-            const originalConsoleError = console.error;
-            console.error = function (...args) {
-                if (args[0] && args[0].toString().indexOf('https://dc.services.visualstudio.com/v2/track') === -1) {
-                    originalConsoleError.apply(console, args);
-                }
-            };
-        }
+        
     </script>
 </body>
 </html>

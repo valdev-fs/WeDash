@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\PreventBackHistory;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Middleware\JsonMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'prevent-back-history' => PreventBackHistory::class,
             'is_admin' => IsAdmin::class,
             'redirect_if_authenticated' => RedirectIfAuthenticated::class,
+            'jsonmiddleware' => JsonMiddleware::class,
         ]);
 
         // Register PreventBackHistory middleware globally

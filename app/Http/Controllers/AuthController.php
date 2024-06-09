@@ -20,11 +20,11 @@ class AuthController extends Controller
             'npk' => 'required|numeric|digits:5',
             'password' => 'required|string',
         ]);
-
-        $user = User::where('NPK', $request->npk)->first();
-
-        if ($user && Hash::check($request->password, $user->password)) {
-            Auth::login($user);
+    
+        $credentials = $request->only('npk', 'password');
+    
+        if (Auth::attempt($credentials)) {
+            // Authentication passed
             return redirect()->route('home');
         }
 

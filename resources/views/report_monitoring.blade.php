@@ -7,7 +7,6 @@
     <title>Report Monitoring</title>
     <link href="{{ asset('css/user.css') }}" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -28,30 +27,28 @@
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        .metrics,
-        .report-table {
+        .metrics {
             display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
         }
 
-        .metric,
-        .date-filter {
+        .metric {
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 300px;
+            flex: 1;
             margin: 10px;
+            text-align: center;
         }
 
-        .metric h2,
-        .date-filter label {
-            margin: 0 0 10px 0;
+        .metric h2 {
+            margin: 0 0 10px;
             color: #666;
         }
 
@@ -61,6 +58,59 @@
             margin: 0;
         }
 
+        .chart-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .date-filter {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .date-filter label {
+            margin: 0 10px 0 0;
+            color: #666;
+        }
+
+        .date-filter input {
+            flex: 1;
+            margin: 0 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .date-filter button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .date-filter button:hover {
+            background-color: #0056b3;
+        }
+
+        .report-table {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -68,43 +118,19 @@
         }
 
         table thead {
-            background-color: #333;
+            background-color: #007bff;
             color: #fff;
         }
 
         table th,
         table td {
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #ddd;
             text-align: left;
         }
 
         table tbody tr:nth-child(odd) {
             background-color: #f9f9f9;
-        }
-
-        .chart-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .date-filter input,
-        .date-filter button {
-            display: block;
-            width: 100%;
-            margin: 5px 0;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .date-filter button {
-            background-color: #333;
-            color: #fff;
-            cursor: pointer;
         }
 
         .modal {
@@ -116,17 +142,17 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0, 0, 0);
             background-color: rgba(0, 0, 0, 0.4);
             padding-top: 60px;
         }
 
         .modal-content {
-            background-color: #fefefe;
+            background-color: #fff;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
+            border-radius: 8px;
         }
 
         .close {
@@ -138,9 +164,30 @@
 
         .close:hover,
         .close:focus {
-            color: black;
+            color: #333;
             text-decoration: none;
             cursor: pointer;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pagination button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -158,7 +205,7 @@
         <div class="metrics">
             <div class="metric">
                 <h2>Users</h2>
-                <table id="userViews">
+                <table id="userViews" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>User Account</th>
@@ -181,7 +228,7 @@
             <button id="filterButton">Filter</button>
         </div>
         <div class="report-table">
-            <table id="reportDetails">
+            <table id="reportDetails" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Report Name</th>
@@ -198,7 +245,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>User Detail</h2>
-            <table id="userDetailTable">
+            <table id="userDetailTable" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Report Name</th>

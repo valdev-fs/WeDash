@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Log;
 
 class PowerBIService
 {
@@ -15,7 +16,7 @@ class PowerBIService
         $password = env('PASSWORD');
 
         if (empty($clientId) || empty($clientSecret) || empty($email) || empty($password)) {
-            \Log::error('Missing environment variables for Azure authentication');
+            Log::error('Missing environment variables for Azure authentication');
             throw new \Exception('Missing environment variables for Azure authentication');
         }
 
@@ -66,7 +67,7 @@ class PowerBIService
             }
         } catch (RequestException $e) {
             // Log the exception and rethrow it
-            \Log::error('Error generating embed token', ['exception' => $e]);
+            Log::error('Error generating embed token', ['exception' => $e]);
             throw $e;
         }
     }
