@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2024 at 05:08 PM
+-- Generation Time: Jun 11, 2024 at 03:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -92,7 +92,33 @@ INSERT INTO `access_users` (`id`, `NPK`, `report_id`, `created_at`, `updated_at`
 (63, '17640', 82, '2024-05-30 00:28:28', '2024-05-30 00:28:28'),
 (64, '17640', 83, '2024-05-30 00:28:28', '2024-05-30 00:28:28'),
 (65, '17640', 84, '2024-05-30 00:28:28', '2024-05-30 00:28:28'),
-(66, '17640', 85, '2024-05-30 00:28:28', '2024-05-30 00:28:28');
+(66, '17640', 85, '2024-05-30 00:28:28', '2024-05-30 00:28:28'),
+(67, '22222', 8, '2024-06-07 09:15:56', '2024-06-07 09:15:56'),
+(68, '22222', 17, '2024-06-07 09:15:56', '2024-06-07 09:15:56'),
+(69, '10050', 44, '2024-06-09 02:09:12', '2024-06-09 02:09:12'),
+(70, '11959', 17, '2024-06-11 05:43:13', '2024-06-11 05:43:13');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branch_filters`
+--
+
+CREATE TABLE `branch_filters` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `branch_table` varchar(255) NOT NULL,
+  `report_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `branch_filters`
+--
+
+INSERT INTO `branch_filters` (`id`, `branch_table`, `report_id`, `created_at`, `updated_at`) VALUES
+(6, 'AreaBranch', 44, '2024-06-11 05:45:43', '2024-06-11 05:45:43'),
+(7, 'OpCent DimBranch', 17, '2024-06-11 05:45:49', '2024-06-11 05:45:49');
 
 -- --------------------------------------------------------
 
@@ -126,7 +152,9 @@ CREATE TABLE `cache_locks` (
 
 CREATE TABLE `departments` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name_department` varchar(25) NOT NULL,
+  `code_department` varchar(25) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `group` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -135,10 +163,11 @@ CREATE TABLE `departments` (
 -- Dumping data for table `departments`
 --
 
-INSERT INTO `departments` (`id`, `name_department`, `created_at`, `updated_at`) VALUES
-(1, 'IT', NULL, '2024-05-30 02:11:52'),
-(2, 'HR', NULL, NULL),
-(4, 'Finance', '2024-05-30 02:11:59', '2024-05-30 02:11:59');
+INSERT INTO `departments` (`id`, `code_department`, `description`, `group`, `created_at`, `updated_at`) VALUES
+(1, 'IT', 'IT', 'HO', NULL, '2024-05-30 02:11:52'),
+(2, 'HR', 'HR', 'HO', NULL, NULL),
+(6, '100103', 'Fatmawati', 'Cabang', '2024-06-09 01:00:15', '2024-06-09 01:00:15'),
+(7, '100102', 'Kwitang', 'Cabang', '2024-06-11 05:42:46', '2024-06-11 05:42:46');
 
 -- --------------------------------------------------------
 
@@ -208,13 +237,10 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(4, '2024_05_28_081537_add_groupid_to_reports_table', 2),
-(7, '0001_01_01_000000_create_users_table', 3),
-(14, '0001_01_01_000001_create_cache_table', 4),
-(15, '0001_01_01_000002_create_jobs_table', 4),
-(16, '2024_05_28_153355_create_departments_table', 4),
-(18, '2024_05_28_153422_create_users_table', 5),
-(19, '2024_05_29_045417_add_is_admin_to_users_table', 6);
+(23, '2024_06_09_073017_create_branch_filter_table', 1),
+(24, '2024_06_09_073048_add_group_to_departments_table', 1),
+(25, '2024_06_09_074427_add_description_to_departments_table', 2),
+(26, '2024_06_09_074638_update_departments_table', 3);
 
 -- --------------------------------------------------------
 
@@ -304,6 +330,156 @@ INSERT INTO `reports` (`id`, `name_report`, `id_report`, `id_dataset`, `id_group
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `report_view_logs`
+--
+
+CREATE TABLE `report_view_logs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `report_id` bigint(20) UNSIGNED NOT NULL,
+  `viewed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `report_view_logs`
+--
+
+INSERT INTO `report_view_logs` (`id`, `user_id`, `report_id`, `viewed_at`, `created_at`, `updated_at`) VALUES
+(1, 1, 44, '2024-06-07 07:46:03', '2024-06-07 07:46:03', '2024-06-07 07:46:03'),
+(2, 1, 17, '2024-06-07 07:58:49', '2024-06-07 07:58:49', '2024-06-07 07:58:49'),
+(3, 1, 17, '2024-06-07 19:16:15', '2024-06-07 19:16:15', '2024-06-07 19:16:15'),
+(4, 1, 15, '2024-06-07 20:21:53', '2024-06-07 20:21:53', '2024-06-07 20:21:53'),
+(5, 1, 44, '2024-06-08 23:34:26', '2024-06-08 23:34:26', '2024-06-08 23:34:26'),
+(6, 1, 17, '2024-06-08 23:39:47', '2024-06-08 23:39:47', '2024-06-08 23:39:47'),
+(7, 1, 17, '2024-06-08 23:43:26', '2024-06-08 23:43:27', '2024-06-08 23:43:27'),
+(8, 1, 44, '2024-06-08 23:45:53', '2024-06-08 23:45:53', '2024-06-08 23:45:53'),
+(9, 1, 17, '2024-06-09 00:18:54', '2024-06-09 00:18:54', '2024-06-09 00:18:54'),
+(10, 1, 17, '2024-06-09 00:19:28', '2024-06-09 00:19:28', '2024-06-09 00:19:28'),
+(11, 1, 17, '2024-06-09 01:55:00', '2024-06-09 01:55:00', '2024-06-09 01:55:00'),
+(12, 1, 17, '2024-06-09 01:55:14', '2024-06-09 01:55:14', '2024-06-09 01:55:14'),
+(13, 1, 17, '2024-06-09 01:55:17', '2024-06-09 01:55:17', '2024-06-09 01:55:17'),
+(14, 1, 17, '2024-06-09 01:55:30', '2024-06-09 01:55:30', '2024-06-09 01:55:30'),
+(15, 1, 17, '2024-06-09 01:56:54', '2024-06-09 01:56:54', '2024-06-09 01:56:54'),
+(16, 1, 17, '2024-06-09 01:59:59', '2024-06-09 01:59:59', '2024-06-09 01:59:59'),
+(17, 1, 17, '2024-06-09 02:03:48', '2024-06-09 02:03:48', '2024-06-09 02:03:48'),
+(18, 1, 17, '2024-06-09 02:06:13', '2024-06-09 02:06:13', '2024-06-09 02:06:13'),
+(19, 7, 44, '2024-06-09 02:09:24', '2024-06-09 02:09:24', '2024-06-09 02:09:24'),
+(20, 7, 44, '2024-06-09 02:09:39', '2024-06-09 02:09:39', '2024-06-09 02:09:39'),
+(21, 7, 44, '2024-06-09 02:10:05', '2024-06-09 02:10:05', '2024-06-09 02:10:05'),
+(22, 7, 44, '2024-06-09 02:10:07', '2024-06-09 02:10:07', '2024-06-09 02:10:07'),
+(23, 7, 44, '2024-06-09 02:10:09', '2024-06-09 02:10:09', '2024-06-09 02:10:09'),
+(24, 7, 44, '2024-06-09 02:18:19', '2024-06-09 02:18:19', '2024-06-09 02:18:19'),
+(25, 7, 44, '2024-06-09 02:20:28', '2024-06-09 02:20:28', '2024-06-09 02:20:28'),
+(26, 7, 44, '2024-06-09 02:23:02', '2024-06-09 02:23:02', '2024-06-09 02:23:02'),
+(27, 1, 44, '2024-06-09 02:23:16', '2024-06-09 02:23:16', '2024-06-09 02:23:16'),
+(28, 1, 44, '2024-06-09 02:24:27', '2024-06-09 02:24:27', '2024-06-09 02:24:27'),
+(29, 1, 44, '2024-06-09 02:26:04', '2024-06-09 02:26:04', '2024-06-09 02:26:04'),
+(30, 1, 17, '2024-06-09 02:26:40', '2024-06-09 02:26:40', '2024-06-09 02:26:40'),
+(31, 7, 44, '2024-06-09 02:27:05', '2024-06-09 02:27:05', '2024-06-09 02:27:05'),
+(32, 7, 44, '2024-06-09 02:28:17', '2024-06-09 02:28:17', '2024-06-09 02:28:17'),
+(33, 7, 44, '2024-06-09 02:30:14', '2024-06-09 02:30:14', '2024-06-09 02:30:14'),
+(34, 7, 44, '2024-06-09 02:31:36', '2024-06-09 02:31:36', '2024-06-09 02:31:36'),
+(35, 7, 44, '2024-06-09 02:36:27', '2024-06-09 02:36:27', '2024-06-09 02:36:27'),
+(36, 7, 44, '2024-06-09 02:37:03', '2024-06-09 02:37:03', '2024-06-09 02:37:03'),
+(37, 7, 44, '2024-06-09 02:42:06', '2024-06-09 02:42:06', '2024-06-09 02:42:06'),
+(38, 1, 44, '2024-06-09 02:53:48', '2024-06-09 02:53:48', '2024-06-09 02:53:48'),
+(39, 7, 44, '2024-06-09 02:53:59', '2024-06-09 02:53:59', '2024-06-09 02:53:59'),
+(40, 7, 44, '2024-06-09 03:00:32', '2024-06-09 03:00:32', '2024-06-09 03:00:32'),
+(41, 7, 44, '2024-06-09 03:04:58', '2024-06-09 03:04:58', '2024-06-09 03:04:58'),
+(42, 7, 44, '2024-06-09 03:04:59', '2024-06-09 03:04:59', '2024-06-09 03:04:59'),
+(43, 7, 44, '2024-06-09 03:05:07', '2024-06-09 03:05:07', '2024-06-09 03:05:07'),
+(44, 7, 44, '2024-06-09 03:09:27', '2024-06-09 03:09:27', '2024-06-09 03:09:27'),
+(45, 7, 44, '2024-06-09 03:11:14', '2024-06-09 03:11:14', '2024-06-09 03:11:14'),
+(46, 7, 44, '2024-06-09 03:11:47', '2024-06-09 03:11:47', '2024-06-09 03:11:47'),
+(47, 7, 44, '2024-06-09 03:13:57', '2024-06-09 03:13:57', '2024-06-09 03:13:57'),
+(48, 7, 44, '2024-06-09 03:15:24', '2024-06-09 03:15:24', '2024-06-09 03:15:24'),
+(49, 7, 44, '2024-06-09 03:16:41', '2024-06-09 03:16:41', '2024-06-09 03:16:41'),
+(50, 7, 44, '2024-06-09 03:16:54', '2024-06-09 03:16:54', '2024-06-09 03:16:54'),
+(51, 7, 44, '2024-06-09 03:20:09', '2024-06-09 03:20:09', '2024-06-09 03:20:09'),
+(52, 7, 44, '2024-06-09 03:20:44', '2024-06-09 03:20:44', '2024-06-09 03:20:44'),
+(53, 7, 44, '2024-06-09 03:23:39', '2024-06-09 03:23:39', '2024-06-09 03:23:39'),
+(54, 7, 44, '2024-06-09 03:24:40', '2024-06-09 03:24:40', '2024-06-09 03:24:40'),
+(55, 7, 44, '2024-06-09 03:25:45', '2024-06-09 03:25:45', '2024-06-09 03:25:45'),
+(56, 7, 44, '2024-06-09 03:28:06', '2024-06-09 03:28:06', '2024-06-09 03:28:06'),
+(57, 7, 44, '2024-06-09 03:28:22', '2024-06-09 03:28:22', '2024-06-09 03:28:22'),
+(58, 7, 44, '2024-06-09 03:29:19', '2024-06-09 03:29:19', '2024-06-09 03:29:19'),
+(59, 7, 44, '2024-06-09 03:29:34', '2024-06-09 03:29:34', '2024-06-09 03:29:34'),
+(60, 7, 44, '2024-06-09 03:29:47', '2024-06-09 03:29:47', '2024-06-09 03:29:47'),
+(61, 7, 44, '2024-06-09 03:30:21', '2024-06-09 03:30:21', '2024-06-09 03:30:21'),
+(62, 7, 44, '2024-06-09 03:30:24', '2024-06-09 03:30:24', '2024-06-09 03:30:24'),
+(63, 7, 44, '2024-06-09 03:30:33', '2024-06-09 03:30:33', '2024-06-09 03:30:33'),
+(64, 7, 44, '2024-06-09 03:31:00', '2024-06-09 03:31:00', '2024-06-09 03:31:00'),
+(65, 7, 44, '2024-06-09 03:31:22', '2024-06-09 03:31:22', '2024-06-09 03:31:22'),
+(66, 7, 44, '2024-06-09 03:31:34', '2024-06-09 03:31:34', '2024-06-09 03:31:34'),
+(67, 7, 44, '2024-06-09 03:31:35', '2024-06-09 03:31:35', '2024-06-09 03:31:35'),
+(68, 7, 44, '2024-06-09 03:31:37', '2024-06-09 03:31:37', '2024-06-09 03:31:37'),
+(69, 7, 44, '2024-06-09 03:31:39', '2024-06-09 03:31:39', '2024-06-09 03:31:39'),
+(70, 7, 44, '2024-06-09 03:31:59', '2024-06-09 03:31:59', '2024-06-09 03:31:59'),
+(71, 7, 44, '2024-06-09 03:32:19', '2024-06-09 03:32:19', '2024-06-09 03:32:19'),
+(72, 7, 44, '2024-06-09 03:32:49', '2024-06-09 03:32:49', '2024-06-09 03:32:49'),
+(73, 7, 44, '2024-06-09 03:33:35', '2024-06-09 03:33:35', '2024-06-09 03:33:35'),
+(74, 7, 44, '2024-06-09 03:33:48', '2024-06-09 03:33:48', '2024-06-09 03:33:48'),
+(75, 7, 44, '2024-06-09 03:35:21', '2024-06-09 03:35:21', '2024-06-09 03:35:21'),
+(76, 7, 44, '2024-06-09 03:35:42', '2024-06-09 03:35:42', '2024-06-09 03:35:42'),
+(77, 7, 44, '2024-06-09 03:36:43', '2024-06-09 03:36:43', '2024-06-09 03:36:43'),
+(78, 7, 44, '2024-06-09 03:37:17', '2024-06-09 03:37:17', '2024-06-09 03:37:17'),
+(79, 7, 44, '2024-06-09 03:37:51', '2024-06-09 03:37:51', '2024-06-09 03:37:51'),
+(80, 7, 44, '2024-06-09 03:38:01', '2024-06-09 03:38:01', '2024-06-09 03:38:01'),
+(81, 7, 44, '2024-06-09 03:38:49', '2024-06-09 03:38:49', '2024-06-09 03:38:49'),
+(82, 7, 44, '2024-06-09 03:39:02', '2024-06-09 03:39:02', '2024-06-09 03:39:02'),
+(83, 7, 44, '2024-06-09 03:39:21', '2024-06-09 03:39:21', '2024-06-09 03:39:21'),
+(84, 7, 44, '2024-06-09 03:39:57', '2024-06-09 03:39:57', '2024-06-09 03:39:57'),
+(85, 7, 44, '2024-06-09 03:40:35', '2024-06-09 03:40:35', '2024-06-09 03:40:35'),
+(86, 7, 44, '2024-06-09 03:41:14', '2024-06-09 03:41:14', '2024-06-09 03:41:14'),
+(87, 7, 44, '2024-06-09 03:42:24', '2024-06-09 03:42:24', '2024-06-09 03:42:24'),
+(88, 7, 44, '2024-06-09 03:43:20', '2024-06-09 03:43:20', '2024-06-09 03:43:20'),
+(89, 7, 44, '2024-06-09 03:43:41', '2024-06-09 03:43:41', '2024-06-09 03:43:41'),
+(90, 7, 44, '2024-06-09 03:44:10', '2024-06-09 03:44:10', '2024-06-09 03:44:10'),
+(91, 7, 44, '2024-06-09 03:44:40', '2024-06-09 03:44:40', '2024-06-09 03:44:40'),
+(92, 7, 44, '2024-06-09 03:44:50', '2024-06-09 03:44:50', '2024-06-09 03:44:50'),
+(93, 7, 44, '2024-06-09 03:45:35', '2024-06-09 03:45:35', '2024-06-09 03:45:35'),
+(94, 7, 44, '2024-06-09 03:45:54', '2024-06-09 03:45:54', '2024-06-09 03:45:54'),
+(95, 7, 44, '2024-06-09 03:47:16', '2024-06-09 03:47:16', '2024-06-09 03:47:16'),
+(96, 7, 44, '2024-06-09 03:49:04', '2024-06-09 03:49:04', '2024-06-09 03:49:04'),
+(97, 7, 44, '2024-06-09 03:49:08', '2024-06-09 03:49:08', '2024-06-09 03:49:08'),
+(98, 7, 44, '2024-06-09 03:51:17', '2024-06-09 03:51:17', '2024-06-09 03:51:17'),
+(99, 7, 44, '2024-06-09 03:52:23', '2024-06-09 03:52:23', '2024-06-09 03:52:23'),
+(100, 7, 44, '2024-06-09 03:54:04', '2024-06-09 03:54:04', '2024-06-09 03:54:04'),
+(101, 7, 44, '2024-06-09 03:54:27', '2024-06-09 03:54:27', '2024-06-09 03:54:27'),
+(102, 7, 44, '2024-06-09 03:56:21', '2024-06-09 03:56:21', '2024-06-09 03:56:21'),
+(103, 7, 44, '2024-06-09 03:56:47', '2024-06-09 03:56:47', '2024-06-09 03:56:47'),
+(104, 7, 44, '2024-06-09 03:57:09', '2024-06-09 03:57:09', '2024-06-09 03:57:09'),
+(105, 7, 44, '2024-06-09 03:58:22', '2024-06-09 03:58:22', '2024-06-09 03:58:22'),
+(106, 1, 44, '2024-06-09 03:59:11', '2024-06-09 03:59:11', '2024-06-09 03:59:11'),
+(107, 1, 44, '2024-06-09 03:59:12', '2024-06-09 03:59:12', '2024-06-09 03:59:12'),
+(108, 1, 44, '2024-06-09 03:59:15', '2024-06-09 03:59:15', '2024-06-09 03:59:15'),
+(109, 7, 44, '2024-06-09 03:59:58', '2024-06-09 03:59:58', '2024-06-09 03:59:58'),
+(110, 7, 44, '2024-06-09 04:00:00', '2024-06-09 04:00:00', '2024-06-09 04:00:00'),
+(111, 7, 44, '2024-06-11 05:42:00', '2024-06-11 05:42:00', '2024-06-11 05:42:00'),
+(112, 8, 17, '2024-06-11 05:43:35', '2024-06-11 05:43:35', '2024-06-11 05:43:35'),
+(113, 8, 17, '2024-06-11 05:44:15', '2024-06-11 05:44:15', '2024-06-11 05:44:15'),
+(114, 8, 17, '2024-06-11 05:45:59', '2024-06-11 05:45:59', '2024-06-11 05:45:59'),
+(115, 8, 17, '2024-06-11 05:47:57', '2024-06-11 05:47:57', '2024-06-11 05:47:57'),
+(116, 8, 17, '2024-06-11 05:51:23', '2024-06-11 05:51:23', '2024-06-11 05:51:23'),
+(117, 8, 17, '2024-06-11 05:51:38', '2024-06-11 05:51:38', '2024-06-11 05:51:38'),
+(118, 8, 17, '2024-06-11 05:52:26', '2024-06-11 05:52:26', '2024-06-11 05:52:26'),
+(119, 8, 17, '2024-06-11 05:54:11', '2024-06-11 05:54:11', '2024-06-11 05:54:11'),
+(120, 8, 17, '2024-06-11 05:55:24', '2024-06-11 05:55:24', '2024-06-11 05:55:24'),
+(121, 8, 17, '2024-06-11 05:55:53', '2024-06-11 05:55:53', '2024-06-11 05:55:53'),
+(122, 8, 17, '2024-06-11 05:56:35', '2024-06-11 05:56:35', '2024-06-11 05:56:35'),
+(123, 7, 44, '2024-06-11 05:57:04', '2024-06-11 05:57:04', '2024-06-11 05:57:04'),
+(124, 7, 44, '2024-06-11 05:57:36', '2024-06-11 05:57:36', '2024-06-11 05:57:36'),
+(125, 7, 44, '2024-06-11 05:58:13', '2024-06-11 05:58:13', '2024-06-11 05:58:13'),
+(126, 7, 44, '2024-06-11 05:58:43', '2024-06-11 05:58:43', '2024-06-11 05:58:43'),
+(127, 7, 44, '2024-06-11 06:05:45', '2024-06-11 06:05:45', '2024-06-11 06:05:45'),
+(128, 7, 44, '2024-06-11 06:06:09', '2024-06-11 06:06:09', '2024-06-11 06:06:09'),
+(129, 8, 17, '2024-06-11 06:06:32', '2024-06-11 06:06:32', '2024-06-11 06:06:32');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sessions`
 --
 
@@ -321,8 +497,10 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('7I9TpibofMpUEXjNgmsPNAne7QSjZXtMAkdr6uqT', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiblNBUjVjUllROU9MTXYzQjRoSUQwNnlOdVA0ekZLN2VZam14d3plRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=', 1717068689),
-('JIEyo7XH8hEfGTjJ0Ad53XZ3717eK1mV6RNbIUML', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTDlIcXVCMzVIMmZjY1N6MFNxNXo2VHh6enVtVkZtTFJWbHNYeUs1VCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czoyMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwIjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC91c2VyLW1hbmFnZW1lbnQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1717354260);
+('9q6lsZLhdziZIwp3cptRPpT4Jl8MNjKpF5wPblUr', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMWZaMGhtN0pMUGdVcHpoMXkzaGVRcEtiRERGT29zQW9DeGM0UVJYOCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=', 1717930818),
+('CiC4ZjZqdqslnNo61hHXCYAg4kQTRC5wYWs2a61d', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiODN1MHJ4bmEwWG9OMWRlNWVZOVoxS1BFbmZDOFFJbmZ2MjRNbHFZcCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6OTU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvZ2V0LWJyYW5jaC1maWx0ZXItZGF0YT9yZXBvcnRfaWQ9ODU1OTM1ODAtYmU1Ni00ZTcxLTg5YmQtNzRlMDRmNzk3M2YzIjt9fQ==', 1717927501),
+('T5xmC6fuVTnRuZ845BxuqKy4aKeLefUQagpeahw9', NULL, '127.0.0.1', 'PostmanRuntime/7.39.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicTJYRkh2SGhZNDZRQTIxZUQ3Vkh4c1FDUFZXSGhpUFFHVHdPZDdMdCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozMjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3JlcG9ydHMvNDQiO31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo1NDoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FwaS9nZXQtYnJhbmNoLWZpbHRlci1kYXRhP2lkPTQ0Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1717928805),
+('uIDJBzRaPXMZNLAEbtYEFGp8dL8qteufpAJsCYEi', 8, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiNm1nQ3VCZ0d1TG94eHN3NkVjRUE0YVJ2SWhRQlIyZHpQNWtYSEUzZCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hcGkvZ2V0LWJyYW5jaC1maWx0ZXItZGF0YT9pZD0xNyI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjg7fQ==', 1718111192);
 
 -- --------------------------------------------------------
 
@@ -350,7 +528,9 @@ INSERT INTO `users` (`id`, `NPK`, `password`, `id_department`, `is_admin`, `crea
 (3, '22222', '$2y$12$Wz7hO7kOC6oGDkLeQRjgXeui9fmqlvVY7aC/n02BdyU7YudL8dDSa', 1, 0, '2024-05-28 21:44:00', '2024-05-28 21:44:00'),
 (4, '55555', '$2y$12$OcTXU/niaoEkxQc7yWMgJuBlnIi/92vv9TiMVVL2M8Hhm/qU4RHEy', 2, 1, '2024-05-28 21:47:32', '2024-05-30 00:43:37'),
 (5, '11111', '$2y$12$fjn5JeO4..UzFQr5RDMT5ettS8QS.L4ykkTSz226wiGdKoLLZdgHm', 1, 0, '2024-05-28 22:07:37', '2024-05-30 01:15:13'),
-(6, '10000', '$2y$12$lkcSSexRr1hbI8AZQqUeJOHJKyryPra5AxtGKaLM3Ogf1SCeT/ZmC', 1, 1, '2024-05-28 22:10:11', '2024-05-28 22:10:11');
+(6, '10000', '$2y$12$lkcSSexRr1hbI8AZQqUeJOHJKyryPra5AxtGKaLM3Ogf1SCeT/ZmC', 1, 1, '2024-05-28 22:10:11', '2024-05-28 22:10:11'),
+(7, '10050', '$2y$12$UGE.dGrQcLfeJORkMIUT/OHs6/pFsiMpkedq7DHeF3XVFh6QyqEz.', 6, 0, '2024-06-09 02:08:46', '2024-06-09 02:08:46'),
+(8, '11959', '$2y$12$0yftWTZicnJIXqXq2RkBUOLx9V.k08JypWKNHjWN4.kfJIeZ8WQMG', 7, 0, '2024-06-11 05:43:01', '2024-06-11 05:43:01');
 
 --
 -- Indexes for dumped tables
@@ -362,6 +542,12 @@ INSERT INTO `users` (`id`, `NPK`, `password`, `id_department`, `is_admin`, `crea
 ALTER TABLE `access_users`
   ADD PRIMARY KEY (`id`),
   ADD KEY `access_users_npk_foreign` (`NPK`);
+
+--
+-- Indexes for table `branch_filters`
+--
+ALTER TABLE `branch_filters`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `cache`
@@ -420,6 +606,12 @@ ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `report_view_logs`
+--
+ALTER TABLE `report_view_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
@@ -443,13 +635,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `access_users`
 --
 ALTER TABLE `access_users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+
+--
+-- AUTO_INCREMENT for table `branch_filters`
+--
+ALTER TABLE `branch_filters`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -467,7 +665,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -476,10 +674,16 @@ ALTER TABLE `reports`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
+-- AUTO_INCREMENT for table `report_view_logs`
+--
+ALTER TABLE `report_view_logs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
