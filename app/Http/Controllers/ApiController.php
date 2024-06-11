@@ -29,7 +29,6 @@ class ApiController extends Controller
         }
 
         Log::info('Branch Filter Data:', ['branchTables' => $branchFilters]);
-
         return response()->json([
             'branchTables' => $branchFilters[0]->branch_table,
         ]);

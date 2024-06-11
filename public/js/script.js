@@ -153,6 +153,12 @@ function loadReport(reportId) {
                     if (userDepartmentData.group !== "HO") {
                         fetchFilterData(id)
                             .then((branchFilterData) => {
+                                if (branchFilterData.branchTables === "OpCent DimBranch") {
+                                    codeDepartmentValue = userDepartmentData.codeDepartment;
+                                } else {
+                                    codeDepartmentValue = ~~userDepartmentData.codeDepartment;
+                                }
+
                                 var branchFilter = {
                                     $schema:
                                         "http://powerbi.com/product/schema#basic",
@@ -162,7 +168,7 @@ function loadReport(reportId) {
                                     },
                                     operator: "In",
                                     values: [
-                                        ~~userDepartmentData.codeDepartment,
+                                        codeDepartmentValue,
                                     ], // Use code_department value
                                 };
                                 config = {
